@@ -43,6 +43,10 @@ def desbloquear_sites():
                 if not any(site in line for site in sites):
                     file.write(line)
 
+
+
+                    
+
         atualizar_lista()
         messagebox.showinfo("Sucesso", "Sites desbloqueados com sucesso.")
     except Exception as e:
