@@ -43,10 +43,6 @@ def desbloquear_sites():
                 if not any(site in line for site in sites):
                     file.write(line)
 
-
-
-                    
-
         atualizar_lista()
         messagebox.showinfo("Sucesso", "Sites desbloqueados com sucesso.")
     except Exception as e:
@@ -58,8 +54,13 @@ def atualizar_lista():
         with open(hosts_path, "r") as file:
             lines = file.readlines()
             bloqueados = [line.split()[1] for line in lines if line.startswith(redirect_ip)]
+        
+        # Habilita a edição temporariamente para atualizar o conteúdo
+        txt_bloqueados.config(state=NORMAL)
         txt_bloqueados.delete("1.0", END)
         txt_bloqueados.insert("1.0", "\n".join(bloqueados))
+        # Desabilita novamente após a atualização
+        txt_bloqueados.config(state=DISABLED)
     except Exception as e:
         messagebox.showerror("Erro", f"Erro ao atualizar lista: {e}")
 
@@ -81,29 +82,31 @@ frame_entry.pack(pady=15, fill=X)
 
 Label(frame_entry, text="Digite o endereço do site (ex: www.facebook.com):", font=("Arial", 12), bg="#f4f4f4").pack(anchor="w", padx=20, pady=5)
 
-txt_sites = Text(frame_entry, height=5, width=60, relief="solid", bd=1, highlightbackground="#ddd", font=("Arial", 10))
+txt_sites = Text(frame_entry, height=5, width=60, relief="solid", bd=1, highlightbackground="#ddd", font=("Arial", 12))
 txt_sites.pack(padx=20, pady=5)
 
 # Botões
 frame_buttons = Frame(root, bg="#f4f4f4")
 frame_buttons.pack(pady=10)
 
-btn_bloquear = Button(frame_buttons, text="Bloquear Site", bg="#ff6b6b", fg="white", font=("Arial", 10, "bold"),
-                      width=15, relief="groove", command=bloquear_sites)
+btn_bloquear = Button(frame_buttons, text="Bloquear Site", bg="#ff6b6b", fg="white", font=("Arial", 10, "bold"), width=15, relief="groove", command=bloquear_sites)
 btn_bloquear.grid(row=0, column=0, padx=20, pady=10)
 
-btn_desbloquear = Button(frame_buttons, text="Desbloquear Site", bg="#2ecc71", fg="white", font=("Arial", 10, "bold"),
-                         width=15, relief="groove", command=desbloquear_sites)
+btn_desbloquear = Button(frame_buttons, text="Desbloquear Site", bg="#2ecc71", fg="white", font=("Arial", 10, "bold"), width=15, relief="groove", command=desbloquear_sites)
 btn_desbloquear.grid(row=0, column=1, padx=20, pady=10)
 
 # Lista de sites bloqueados
 frame_bloqueados = Frame(root, bg="#f4f4f4")
 frame_bloqueados.pack(pady=20, fill=X)
 
-Label(frame_bloqueados, text="Sites Bloqueados:", font=("Arial", 12, "bold"), bg="#f4f4f4").pack(anchor="w", padx=20, pady=5)
+Label(frame_bloqueados, text="Sites Bloqueados:", font=("Arial", 12), bg="#f4f4f4").pack(anchor="w", padx=20, pady=5)
 
-txt_bloqueados = Text(frame_bloqueados, height=15, width=60, relief="solid", bd=1, highlightbackground="#ddd", font=("Arial", 10))
+# Tornar a área de texto somente leitura
+txt_bloqueados = Text(frame_bloqueados, height=15, width=60, relief="solid", bd=1, highlightbackground="#ddd", font=("Arial", 12))
 txt_bloqueados.pack(padx=20, pady=5)
+
+# Impedir edição e remoção
+txt_bloqueados.config(state=DISABLED)
 
 # Atualizar lista ao iniciar
 atualizar_lista()
