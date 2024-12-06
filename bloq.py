@@ -2,14 +2,11 @@ from tkinter import *
 from tkinter import messagebox
 from elevate import elevate
 
-# Elevar privilégios para administrador
 elevate()
 
-# Caminho do arquivo hosts
 hostsPath = r"C:\Windows\System32\drivers\etc\hosts"
 redirectIp = "127.0.0.1"
 
-# Função para bloquear sites
 def bloquear_sites():
     sites = txt_sites.get("1.0", END).strip().split("\n")
     if not sites or sites == [""]:
@@ -26,7 +23,6 @@ def bloquear_sites():
     except Exception as e:
         messagebox.showerror("Erro", f"Erro ao bloquear sites: {e}")
 
-# Função para desbloquear sites
 def desbloquear_sites():
     sites = txt_sites.get("1.0", END).strip().split("\n")
     if not sites or sites == [""]:
@@ -46,7 +42,6 @@ def desbloquear_sites():
     except Exception as e:
         messagebox.showerror("Erro", f"Erro ao desbloquear sites: {e}")
 
-# Função para exibir os sites bloqueados
 def ver_sites_bloqueados():
     try:
         with open(hostsPath, "r") as file:
@@ -54,17 +49,16 @@ def ver_sites_bloqueados():
             bloqueados = [line.split()[1] for line in lines if line.startswith(redirectIp)]
 
         if bloqueados:
-            sites_bloqueados_window = Toplevel(root)  # Cria uma nova janela
+            sites_bloqueados_window = Toplevel(root)  #
             sites_bloqueados_window.title("Sites Bloqueados")
             sites_bloqueados_window.geometry("400x400")
             sites_bloqueados_window.configure(bg="#2C3E50")
 
             Label(sites_bloqueados_window, text="Sites Bloqueados:", font=("Poppins", 14, "bold"), bg="#2C3E50", fg="white").pack(pady=10)
 
-            # Exibe os sites bloqueados em uma área de texto (somente leitura)
             txt_bloqueados = Text(sites_bloqueados_window, height=15, width=50, relief="flat", bd=1, highlightbackground="#7F8C8D", font=("Poppins", 12), fg="white", bg="#34495E")
-            txt_bloqueados.insert(END, "\n".join(bloqueados))  # Insere os sites bloqueados na área de texto
-            txt_bloqueados.config(state=DISABLED)  # Impede edição
+            txt_bloqueados.insert(END, "\n".join(bloqueados))  
+            txt_bloqueados.config(state=DISABLED) 
             txt_bloqueados.pack(padx=20, pady=10)
 
         else:
@@ -80,12 +74,10 @@ root.geometry("500x600")
 root.resizable(False, False)
 root.configure(bg="#2C3E50")  
 
-# Título
 title_frame = Frame(root, bg="#34495E", pady=10)
 title_frame.pack(fill=X)
 Label(title_frame, text="Bloqueador de Sites", font=("Poppins", 18, "bold"), bg="#34495E", fg="white").pack()
 
-# Frame para entrada de sites
 frame_entry = Frame(root, bg="#2C3E50")
 frame_entry.pack(pady=20, fill=X)
 
@@ -94,7 +86,6 @@ Label(frame_entry, text="Digite o endereço do site: (ex: www.facebook.com)", fo
 txt_sites = Text(frame_entry, height=4, width=50, relief="flat", bd=1, highlightbackground="#7F8C8D", font=("Poppins", 12), wrap=WORD, fg="white", bg="#34495E")
 txt_sites.pack(padx=20, pady=5)
 
-# Botões
 frame_buttons = Frame(root, bg="#2C3E50")
 frame_buttons.pack(pady=10)
 
@@ -107,5 +98,5 @@ btn_desbloquear.grid(row=0, column=1, padx=10, pady=10, ipadx=8, ipady=8)
 btn_ver_bloqueados = Button(frame_buttons, text="Ver Sites Bloqueados", bg="#9B59B6", fg="white", font=("Poppins", 10, "bold"), width=20, relief="flat", command=ver_sites_bloqueados)
 btn_ver_bloqueados.grid(row=1, column=0, columnspan=2, padx=10, pady=10, ipadx=8, ipady=8)
 
-# Iniciar o loop da interface
+
 root.mainloop()
